@@ -1,16 +1,16 @@
 self: super:
 
 let
-  inherit (super) callPackage;
+  inherit (super) callPackage recurseIntoAttrs;
 in
 
 {
-  ruby-overlay = rec {
-    interpreters = {
+  ruby-overlay = recurseIntoAttrs rec {
+    interpreters = recurseIntoAttrs {
       ruby_1_8_7 = callPackage ./ruby-1.8.7/ruby.nix {};
     };
 
-    packages.ruby_1_8_7 = rec {
+    packages.ruby_1_8_7 = recurseIntoAttrs rec {
       ruby = interpreters.ruby_1_8_7;
       rubygems = callPackage ./ruby-1.8.7/rubygems.nix { inherit ruby; };
       buildRubyGem = callPackage ./ruby-1.8.7/build-gem.nix { inherit ruby rubygems; };
